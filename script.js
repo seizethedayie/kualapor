@@ -33,8 +33,7 @@ const statistikData = [
     { bulan: "September", jumlah: 25 }
 ];
 
-// 10 Laporan Dummy Public Feed (Terpisah dari User Reports)
-// 1. Target total laporan dan yang sudah ditangani
+// 10 Laporan Dummy Public Feed
 const publicFeedDummy = [
     {
         id: "pub-1",
@@ -319,46 +318,37 @@ function renderTabelSungai(dataList) {
         "Wilayah Sangkulera", "Kec. Tuva", "Kec. Kulawi", "Kec. Loleo"
     ];
 
-// 2. Baru kemudian kode tbody.innerHTML kamu
-const totalTargetLaporan = 308;
-const totalDitanganiTarget = 245;
+    const totalTargetLaporan = 308;
 
-// Data pasti untuk 4 urutan teratas sesuai gambar, sisanya digenerate otomatis
-tbody.innerHTML = dataList.map((sungai, index) => {
-    let reportCount;
-    const randomLokasi = lokasiList[index % lokasiList.length];
-    const namaSungai = typeof sungai === 'string' ? sungai : (sungai.nama || randomLokasi);
+    tbody.innerHTML = dataList.map((sungai, index) => {
+        let reportCount;
+        const randomLokasi = lokasiList[index % lokasiList.length];
+        const namaSungai = typeof sungai === 'string' ? sungai : (sungai.nama || randomLokasi);
 
-    // Tentukan jumlah laporan khusus untuk 4 index pertama
-    if (index === 0) {
-        reportCount = 38; // Sungai Palu
-    } else if (index === 1) {
-        reportCount = 19; // Sungai Kawatuna
-    } else if (index === 2) {
-        reportCount = 14; // Sungai Tondo
-    } else if (index === 3) {
-        reportCount = 11; // Sungai Tavanjuka
-    } else {
-        // Sisa laporan dibagi rata untuk sisa index berikutnya (bisa 0 atau berapa saja)
-        const sisaLaporanTarget = totalTargetLaporan - (38 + 19 + 14 + 11); // 308 - 82 = 226
-        const sisaIndexCount = dataList.length - 4;
-        const baseSisa = Math.floor(sisaLaporanTarget / sisaIndexCount);
-        
-        // Variasi acak bebas, biarkan bisa turun sampai 0
-        reportCount = Math.max(0, baseSisa + ((index % 5 === 0) ? 2 : (index % 3 === 0) ? -2 : 0));
-    }
+        if (index === 0) {
+            reportCount = 38;
+        } else if (index === 1) {
+            reportCount = 19;
+        } else if (index === 2) {
+            reportCount = 14;
+        } else if (index === 3) {
+            reportCount = 11;
+        } else {
+            const sisaLaporanTarget = totalTargetLaporan - (38 + 19 + 14 + 11);
+            const sisaIndexCount = dataList.length - 4;
+            const baseSisa = Math.floor(sisaLaporanTarget / sisaIndexCount);
+            reportCount = Math.max(0, baseSisa + ((index % 5 === 0) ? 2 : (index % 3 === 0) ? -2 : 0));
+        }
 
-    const handledCount = Math.round(reportCount * (totalDitanganiTarget / totalTargetLaporan));
-
-    return `
-        <tr>
-            <td>${index + 1}</td>
-            <td>${namaSungai}</td>
-            <td>${reportCount}</td>
-            <td>${handledCount}</td>
-        </tr>
-    `;
-}).join('');
+        return `
+            <tr>
+                <td>${index + 1}</td>
+                <td>${namaSungai}</td>
+                <td>${randomLokasi}</td>
+                <td>${reportCount} laporan</td>
+            </tr>
+        `;
+    }).join('');
 }
 
 // ==========================================
@@ -367,7 +357,6 @@ tbody.innerHTML = dataList.map((sungai, index) => {
 let uploadedImageBase64 = null;
 
 function initLaporForm() {
-    // Populate dropdown sungai
     const selectSungai = document.getElementById('lapor-sungai');
     daftarSungai.forEach(sungai => {
         const opt = document.createElement('option');
@@ -376,7 +365,6 @@ function initLaporForm() {
         selectSungai.appendChild(opt);
     });
 
-    // Dropzone upload foto
     const dropzone = document.getElementById('dropzone');
     const fileInput = document.getElementById('lapor-foto');
     const uploadContentInner = document.getElementById('upload-content-inner');
@@ -409,10 +397,8 @@ function initLaporForm() {
         uploadContentInner.classList.remove('hidden');
     });
 
-    // Render Public Feed
     renderPublicFeed(publicFeedDummy);
 
-    // Search Public Feed
     const searchFeedInput = document.getElementById('search-feed-input');
     searchFeedInput.addEventListener('input', (e) => {
         const query = e.target.value.toLowerCase().trim();
@@ -420,7 +406,6 @@ function initLaporForm() {
         renderPublicFeed(filtered);
     });
 
-    // Handle Submit Laporan
     const formLapor = document.getElementById('form-lapor');
     formLapor.addEventListener('submit', (e) => {
         e.preventDefault();
@@ -440,7 +425,7 @@ function initLaporForm() {
             return;
         }
 
-        const fotoFinal = uploadedImageBase64 || "https://images.unsplash.com/photo-1548625361-16921356f91f?auto=format&fit=crop&w=600&q=80";
+        const fotoFinal = uploadedImageBase64 || "images/sungai1.jpg";
 
         const newReport = {
             id: 'rep-' + Date.now(),
@@ -452,10 +437,8 @@ function initLaporForm() {
             status: 'Laporan Terkirim'
         };
 
-        // Simpan ke Riwayat Personal User
         saveUserReport(currentUser.nik, newReport);
 
-        // Masukkan ke Public Feed teratas
         const feedItem = {
             id: newReport.id,
             nama: currentUser.nama,
@@ -471,7 +454,6 @@ function initLaporForm() {
         publicFeedDummy.unshift(feedItem);
         renderPublicFeed(publicFeedDummy);
 
-        // Reset form
         formLapor.reset();
         uploadedImageBase64 = null;
         previewContainer.classList.add('hidden');
@@ -568,7 +550,6 @@ function renderRiwayat(filter = 'semua') {
         if (r.status === 'Sedang Diproses' || r.status === 'Diproses') badgeClass = 'status-proc';
         if (r.status === 'Laporan Selesai' || r.status === 'Selesai') badgeClass = 'status-done';
 
-        // Timeline progress logic
         const isTerkirim = true;
         const isDiproses = r.status === 'Sedang Diproses' || r.status === 'Diproses' || r.status === 'Laporan Selesai' || r.status === 'Selesai';
         const isSelesai = r.status === 'Laporan Selesai' || r.status === 'Selesai';
@@ -630,7 +611,6 @@ function renderProfil() {
     document.getElementById('profil-nama-display').textContent = currentUser.nama;
     document.getElementById('profil-nik-display').textContent = currentUser.nik;
 
-    // Avatar display
     const initials = currentUser.nama.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
     document.getElementById('avatar-initials').textContent = initials;
 
@@ -644,7 +624,6 @@ function renderProfil() {
         document.getElementById('avatar-initials').classList.remove('hidden');
     }
 
-    // Statistik Laporan User
     const reports = getUserReports(currentUser.nik);
     const total = reports.length;
     const diproses = reports.filter(r => r.status === 'Sedang Diproses' || r.status === 'Diproses').length;
@@ -656,7 +635,7 @@ function renderProfil() {
 }
 
 // ==========================================
-// 6. AUTHENTICATION & MODALS (LOGIN / REGISTER)
+// 6. AUTHENTICATION & MODALS
 // ==========================================
 function initAuthModals() {
     const authModal = document.getElementById('auth-modal');
@@ -664,7 +643,6 @@ function initAuthModals() {
     const formLoginBox = document.getElementById('form-login-box');
     const formRegisterBox = document.getElementById('form-register-box');
 
-    // Close Modals
     document.getElementById('modal-close-btn').addEventListener('click', () => {
         authModal.classList.remove('active');
     });
@@ -678,7 +656,6 @@ function initAuthModals() {
         if (e.target === alertModal) alertModal.classList.remove('active');
     });
 
-    // Switch between Login & Register
     document.getElementById('switch-to-register').addEventListener('click', (e) => {
         e.preventDefault();
         formLoginBox.classList.add('hidden');
@@ -690,7 +667,6 @@ function initAuthModals() {
         formLoginBox.classList.remove('hidden');
     });
 
-    // Alert Modal Action Buttons
     document.getElementById('alert-btn-login').addEventListener('click', () => {
         alertModal.classList.remove('active');
         openAuthModal('login');
@@ -700,20 +676,14 @@ function initAuthModals() {
         openAuthModal('register');
     });
 
-    // Toggle Password Visibility
     document.querySelectorAll('.toggle-password').forEach(btn => {
         btn.addEventListener('click', () => {
             const targetId = btn.getAttribute('data-target');
             const input = document.getElementById(targetId);
-            if (input.type === 'password') {
-                input.type = 'text';
-            } else {
-                input.type = 'password';
-            }
+            input.type = (input.type === 'password') ? 'text' : 'password';
         });
     });
 
-    // Handle Login Form Submit
     const loginForm = document.getElementById('login-form');
     loginForm.addEventListener('submit', (e) => {
         e.preventDefault();
@@ -737,7 +707,6 @@ function initAuthModals() {
         }
     });
 
-    // Handle Register Form Submit
     const registerForm = document.getElementById('register-form');
     registerForm.addEventListener('submit', (e) => {
         e.preventDefault();
@@ -797,7 +766,6 @@ function openAlertModal(msg) {
     document.getElementById('alert-modal').classList.add('active');
 }
 
-// Update Sidebar & Topbar Auth UI Berdasarkan Status Login
 function updateAuthUI() {
     const currentUser = getStoredUser();
     const sidebarAuthArea = document.getElementById('sidebar-auth-area');
@@ -806,7 +774,6 @@ function updateAuthUI() {
     if (currentUser) {
         const initials = currentUser.nama.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
         
-        // Sidebar Footer User Profile + Logout
         sidebarAuthArea.innerHTML = `
             <div class="sidebar-user-info">
                 <div class="user-mini-profile">
@@ -819,7 +786,6 @@ function updateAuthUI() {
             </div>
         `;
 
-        // Top Bar Auth (Mobile)
         topBarAuth.innerHTML = `
             <button class="btn btn-secondary top-bar-auth-btn" id="btn-logout-mobile">Logout</button>
         `;
@@ -829,7 +795,6 @@ function updateAuthUI() {
         if (btnLogoutMobile) btnLogoutMobile.addEventListener('click', handleLogout);
 
     } else {
-        // Sidebar Footer Login & Register
         sidebarAuthArea.innerHTML = `
             <div class="sidebar-auth-buttons">
                 <button class="btn btn-secondary btn-block" id="btn-open-login">
@@ -843,7 +808,6 @@ function updateAuthUI() {
             </div>
         `;
 
-        // Top Bar Auth (Mobile)
         topBarAuth.innerHTML = `
             <button class="btn btn-outline top-bar-auth-btn" id="btn-open-login-mobile">Masuk</button>
         `;
