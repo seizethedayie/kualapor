@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kualapor - Pantau & Lapor Pencemaran Sungai</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <div class="app-container">
+        <!-- SIDEBAR (Desktop) / TOP-BOTTOM NAV (Mobile) -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="logo-icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 6c.6.5 1.2 1 2.5 1C7 7 7 5 9.5 5c2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1"></path><path d="M2 12c.6.5 1.2 1 2.5 1 2.5 0 2.5-2 5-2 2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1"></path><path d="M2 18c.6.5 1.2 1 2.5 1 2.5 0 2.5-2 5-2 2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1"></path></svg>
+                </div>
+                <h2>Kualapor</h2>
+            </div>
+
+            <nav class="sidebar-nav">
+                <a href="#" class="nav-item active" data-target="dashboard">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+                    <span>Dashboard</span>
+                </a>
+                <a href="#" class="nav-item" data-target="lapor">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="12" y1="18" x2="12" y2="12"></line><line x1="9" y1="15" x2="15" y2="15"></line></svg>
+                    <span>Lapor</span>
+                </a>
+                <a href="#" class="nav-item" data-target="riwayat">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+                    <span>Riwayat</span>
+                </a>
+                <a href="#" class="nav-item" data-target="profil">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                    <span>Profil</span>
+                </a>
+            </nav>
+
+            <div class="sidebar-footer" id="sidebar-auth-area">
+                <!-- Dinamis melalui JS (Login/Register atau User Info + Logout) -->
+            </div>
+        </aside>
+
+        <!-- MAIN CONTENT AREA -->
+        <main class="main-content">
+            <!-- Top Bar untuk Mobile / Quick Info -->
+            <header class="top-bar">
+                <div class="top-bar-title">Platform Pemantauan Sungai</div>
+                <div class="top-bar-auth" id="top-bar-auth">
+                    <!-- Shortcut kecil login/register untuk visitor -->
+                </div>
+            </header>
+
+            <!-- 1. HALAMAN DASHBOARD -->
+            <section id="dashboard" class="page-section active">
+                <div class="hero-card">
+                    <div class="hero-text">
+                        <h1>Pantau Sungai, Jaga Lingkungan.</h1>
+                        <p>Bersama Kualapor, laporkan pencemaran sungai dan ikut menjaga lingkungan di sekitar kita.</p>
+                        <button class="btn btn-primary btn-lg" id="btn-buat-laporan-hero">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+                            Buat Laporan
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Carousel / Info Sungai Trending -->
+                <div class="section-block">
+                    <h3>Pemantauan Sungai Prioritas</h3>
+                    <div class="river-carousel-container">
+                        <button class="carousel-btn prev" id="carousel-prev">&#10094;</button>
+                        <div class="river-carousel" id="river-carousel">
+                            <!-- Diisi via JS -->
+                        </div>
+                        <button class="carousel-btn next" id="carousel-next">&#10095;</button>
+                    </div>
+                </div>
+
+                <!-- Statistic Cards -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon water">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg>
+                        </div>
+                        <div class="stat-info">
+                            <span class="stat-value">32</span>
+                            <span class="stat-label">Total Sungai</span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon report">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg>
+                        </div>
+                        <div class="stat-info">
+                            <span class="stat-value">308</span>
+                            <span class="stat-label">Total Laporan</span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon resolved">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                        </div>
+                        <div class="stat-info">
+                            <span class="stat-value">245</span>
+                            <span class="stat-label">Laporan Ditangani</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Statistik Pencemaran & Top 1 River Card -->
+                <div class="dashboard-grid-2">
+                    <div class="card chart-card">
+                        <h3>Statistik Pencemaran Sungai</h3>
+                        <p class="card-subtitle">Jumlah Laporan (April - September)</p>
+                        <div class="custom-bar-chart" id="bar-chart">
+                            <!-- Bar chart generated via JS -->
+                        </div>
+                    </div>
+
+                    <div class="card top-river-card">
+                        <div class="badge-warning-soft">Perhatian Khusus</div>
+                        <h3>Sungai Paling Tercemar</h3>
+                        <div class="top-river-title">Sungai Palu</div>
+                        <div class="river-badges">
+                            <span class="badge status-heavy">Tercemar Berat</span>
+                            <span class="badge">pH: 5.8</span>
+                            <span class="badge">Buruk</span>
+                        </div>
+                        <ul class="river-details-list">
+                            <li><span>Parameter Utama:</span> <strong>TSS / Kekeruhan tinggi</strong></li>
+                            <li><span>TDS:</span> <strong>780 mg/L</strong></li>
+                            <li><span>Jumlah Laporan:</span> <strong>38 laporan</strong></li>
+                            <li><span>Periode Pemantauan:</span> <strong>6 bulan terakhir</strong></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Data Sungai Table Section -->
+                <div class="section-block">
+                    <div class="section-header-flex">
+                        <h3>Data Sungai</h3>
+                        <div class="search-box">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                            <input type="text" id="search-sungai-input" placeholder="Cari nama sungai...">
+                        </div>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="data-table" id="tabel-sungai">
+                            <thead>
+                                <tr>
+                                    <th>No.</th>
+                                    <th>Nama Sungai</th>
+                                    <th>Alamat / Lokasi</th>
+                                    <th>Jumlah Laporan</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Diisi via JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 2. HALAMAN LAPOR -->
+            <section id="lapor" class="page-section">
+                <div class="page-header">
+                    <h2>Laporkan Pencemaran Sungai</h2>
+                    <p>Bantu kami menjaga kualitas sungai dengan melaporkan kondisi pencemaran yang kamu temukan.</p>
+                </div>
+
+                <div class="lapor-container">
+                    <form id="form-lapor" class="card form-card">
+                        <div class="form-group">
+                            <label for="lapor-sungai">Nama Sungai</label>
+                            <select id="lapor-sungai" required>
+                                <option value="" disabled selected>Pilih sungai...</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="lapor-lokasi">Alamat / Lokasi Sungai</label>
+                            <input type="text" id="lapor-lokasi" placeholder="Contoh: Jl. Tavanjuka, dekat jembatan II" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Foto Sungai</label>
+                            <div class="upload-dropzone" id="dropzone">
+                                <input type="file" id="lapor-foto" accept="image/png, image/jpeg, image/jpg" hidden>
+                                <div class="upload-content" id="upload-content-inner">
+                                    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
+                                    <p><strong>Unggah foto kondisi sungai</strong></p>
+                                    <span class="upload-hint">PNG, JPG atau JPEG</span>
+                                </div>
+                                <div class="upload-preview-container hidden" id="preview-container">
+                                    <img id="img-preview" src="" alt="Preview Foto">
+                                    <button type="button" class="btn-remove-photo" id="btn-remove-photo">Ganti Foto</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="lapor-ket">Keterangan Laporan</label>
+                            <textarea id="lapor-ket" rows="4" placeholder="Jelaskan kondisi atau keluhan yang kamu temukan..." required></textarea>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary btn-block">Kirim Laporan</button>
+                    </form>
+
+                    <!-- Feed Laporan Terbaru (Publik) -->
+                    <div class="feed-section">
+                        <div class="section-header-flex">
+                            <h3>Laporan Terbaru Publik</h3>
+                            <div class="search-box">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                                <input type="text" id="search-feed-input" placeholder="Cari berdasarkan nama sungai...">
+                            </div>
+                        </div>
+                        <div class="feed-grid" id="feed-grid">
+                            <!-- Diisi via JS -->
+                        </div>
+                        <div id="feed-empty" class="empty-state hidden">
+                            <p>Laporan tidak ditemukan.</p>
+                            <span class="empty-sub">Coba cari menggunakan nama sungai lainnya.</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 3. HALAMAN RIWAYAT -->
+            <section id="riwayat" class="page-section">
+                <div class="page-header">
+                    <h2>Riwayat Laporan Saya</h2>
+                    <p>Pantau status dan perkembangan laporan pencemaran yang telah kamu kirimkan.</p>
+                </div>
+
+                <div class="filter-tabs" id="riwayat-filter">
+                    <button class="filter-tab active" data-filter="semua">Semua</button>
+                    <button class="filter-tab" data-filter="Terkirim">Terkirim</button>
+                    <button class="filter-tab" data-filter="Diproses">Diproses</button>
+                    <button class="filter-tab" data-filter="Selesai">Selesai</button>
+                </div>
+
+                <div class="riwayat-list" id="riwayat-list">
+                    <!-- Diisi via JS -->
+                </div>
+
+                <div id="riwayat-empty" class="empty-state hidden">
+                    <div class="empty-icon">
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
+                    </div>
+                    <h3>Belum Ada Riwayat Laporan</h3>
+                    <p>Laporan yang kamu kirim akan muncul di sini.</p>
+                </div>
+            </section>
+
+            <!-- 4. HALAMAN PROFIL -->
+            <section id="profil" class="page-section">
+                <div class="page-header">
+                    <h2>Profil Pengguna</h2>
+                    <p>Kelola informasi akun dan tinjau ringkasan aktivitas pelaporanmu.</p>
+                </div>
+
+                <div class="profil-grid">
+                    <div class="card profil-card">
+                        <div class="profil-avatar-wrapper">
+                            <div class="profil-avatar" id="profil-avatar-display">
+                                <span id="avatar-initials">AH</span>
+                                <img id="avatar-img" src="" alt="Foto Profil" class="hidden">
+                            </div>
+                            <label for="input-ganti-foto" class="avatar-edit-btn" title="Ganti Foto Profil">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>
+                            </label>
+                            <input type="file" id="input-ganti-foto" accept="image/png, image/jpeg, image/jpg" hidden>
+                        </div>
+                        <h3 id="profil-nama-display">-</h3>
+                        <span class="profil-nik-badge">NIK: <span id="profil-nik-display">-</span></span>
+                    </div>
+
+                    <div class="profil-details-col">
+                        <div class="card">
+                            <h3>Data Akun</h3>
+                            <div class="info-row">
+                                <span class="info-label">Nama Lengkap</span>
+                                <span class="info-val" id="info-nama">-</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-label">Nomor Induk Kependudukan (NIK)</span>
+                                <span class="info-val" id="info-nik">-</span>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <h3>Aktivitas Laporan</h3>
+                            <div class="stats-mini-grid">
+                                <div class="stat-mini">
+                                    <span class="stat-mini-val" id="stat-total-laporan">0</span>
+                                    <span class="stat-mini-label">Total Laporan</span>
+                                </div>
+                                <div class="stat-mini">
+                                    <span class="stat-mini-val" id="stat-diproses-laporan">0</span>
+                                    <span class="stat-mini-label">Diproses</span>
+                                </div>
+                                <div class="stat-mini">
+                                    <span class="stat-mini-val" id="stat-selesai-laporan">0</span>
+                                    <span class="stat-mini-label">Selesai</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <!-- MODAL AUTH (LOGIN / REGISTER) -->
+    <div class="modal-backdrop" id="auth-modal">
+        <div class="modal-card">
+            <button class="modal-close" id="modal-close-btn">&times;</button>
+            
+            <!-- FORM LOGIN -->
+            <div id="form-login-box" class="auth-form-box">
+                <h2>Masuk ke Kualapor</h2>
+                <p class="auth-subtitle">Masukkan NIK dan password terdaftar.</p>
+                <form id="login-form">
+                    <div class="form-group">
+                        <label>NIK (Nomor Induk Kependudukan)</label>
+                        <input type="text" id="login-nik" placeholder="Masukkan 16 digit NIK" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Password</label>
+                        <div class="password-wrapper">
+                            <input type="password" id="login-password" placeholder="Masukkan password" required>
+                            <button type="button" class="toggle-password" data-target="login-password">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                            </button>
+                        </div>
+                    </div>
+                    <div id="login-error" class="error-msg hidden"></div>
+                    <button type="submit" class="btn btn-primary btn-block">Masuk</button>
+                </form>
+                <div class="auth-switch">
+                    Belum punya akun? <a href="#" id="switch-to-register">Daftar sekarang</a>
+                </div>
+            </div>
+
+            <!-- FORM REGISTER -->
+            <div id="form-register-box" class="auth-form-box hidden">
+                <h2>Daftar Akun Baru</h2>
+                <p class="auth-subtitle">Buat akun untuk mulai berpartisipasi melaporkan pencemaran.</p>
+                <form id="register-form">
+                    <div class="form-group">
+                        <label>Nama Lengkap</label>
+                        <input type="text" id="reg-nama" placeholder="Masukkan nama lengkap" required>
+                    </div>
+                    <div class="form-group">
+                        <label>NIK</label>
+                        <input type="text" id="reg-nik" placeholder="Masukkan 16 digit NIK" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Password</label>
+                        <div class="password-wrapper">
+                            <input type="password" id="reg-password" placeholder="Masukkan password" required>
+                            <button type="button" class="toggle-password" data-target="reg-password">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                            </button>
+                        </div>
+                    </div>
+                    <div id="reg-error" class="error-msg hidden"></div>
+                    <button type="submit" class="btn btn-primary btn-block">Daftar</button>
+                </form>
+                <div class="auth-switch">
+                    Sudah punya akun? <a href="#" id="switch-to-login">Masuk</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL ALERT / WARNING (Butuh Login) -->
+    <div class="modal-backdrop" id="alert-modal">
+        <div class="modal-card text-center">
+            <div class="alert-icon-wrap">
+                <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+            </div>
+            <h3>Autentikasi Diperlukan</h3>
+            <p id="alert-msg">Silakan masuk atau daftar terlebih dahulu untuk mengakses fitur ini.</p>
+            <div class="modal-actions">
+                <button class="btn btn-secondary" id="alert-btn-login">Masuk</button>
+                <button class="btn btn-primary" id="alert-btn-register">Daftar</button>
+            </div>
+            <button class="modal-text-close" id="alert-close">Batal</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
